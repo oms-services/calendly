@@ -1,0 +1,117 @@
+oms: 1
+
+info:
+  version: 1.0.2
+  title: Calendly
+  description: Leverage Calendly’s API
+
+lifecycle:
+  startup:
+    command: ['python', '/app/app.py']
+
+health:
+  http:
+    path: /health
+    port: 8000
+
+actions:
+  create:
+    help:
+      Create a webhook subscription. Receive Calendly appointment data in real-time at a specified URL when a Calendly event
+      is scheduled or cancelled.
+    http:
+      path: /create
+      method: post
+      port: 8000
+      contentType: application/json
+    arguments:
+      url:
+        type: string
+        in: requestBody
+        help: 'Where should we send webhooks to? Ex: https://mywebsite.com/webhooks/invitee_created'
+      events:
+        type: string
+        in: requestBody
+        help: 'Array of event names, options: invitee.created or invitee.canceled'
+    output:
+      type: map
+      contentType: application/json
+
+  subscribe:
+    help: Any of your Webhook Subscriptions can be accessed by ID using this endpoint.
+    http:
+      path: /subscribe
+      method: post
+      port: 8000
+      contentType: application/json
+    arguments:
+      hooksId:
+        type: string
+        in: requestBody
+        help: Calendly ID of the Webhook to subscribe to.
+    output:
+      type: map
+      contentType: application/json
+
+  subscribeList:
+    help:
+      You can view your current Webhook Subscriptions. Using this endpoint will list up to the first 100 Webhook
+      Subscriptions, and it will order active subscriptions first. If this endpoint does not list the Webhook Subscription
+      that you need information for, you can find it by ID, or delete the ones you don't need anymore.
+    http:
+      path: /subscribe/list
+      method: get
+      port: 8000
+      contentType: application/json
+    output:
+      type: map
+      contentType: application/json
+
+  delete:
+    help: Any of your Webhook Subscriptions can be deleted by ID using this endpoint.
+    http:
+      path: /delete
+      method: post
+      port: 8000
+      contentType: application/json
+    arguments:
+      hooksId:
+        type: string
+        in: requestBody
+        help: Calendly ID for the Webhook.
+    output:
+      type: map
+      contentType: application/json
+
+  eventType:
+    help:
+      Event Types contain the most important configurations in Calendly. If you need some basic information about your event
+      types, you can use this endpoint.
+    http:
+      path: /event/type
+      method: get
+      port: 8000
+      contentType: application/json
+    output:
+      type: map
+      contentType: application/json
+
+  about:
+    help:
+      Use this endpoint to request basic information about yourself. This might be helpful if you're building functionality
+      for multiple Calendly users.
+    http:
+      path: /about
+      method: get
+      port: 8000
+      contentType: application/json
+    output:
+      type: map
+      contentType: application/json
+
+environment:
+  API_KEY:
+    help: |
+      Get from https://developer.calendly.com/docs/getting-your-authentication-token
+    required: true
+    type: string
