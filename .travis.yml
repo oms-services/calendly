@@ -1,27 +1,17 @@
-# Disable sudo to speed up the build
 sudo: false
-
-# Set OS  for build
 dist: xenial
-
-# Set the build language to Python
 language: python
-
-# Set the python version to 2.7
 python: 3.7
-
-# Install the codecov pip dependency
 install:
-  - pip install -r requirements.txt
-  - pip install pytest==5.0.1
-  - pip install pytest-flask==0.15.0
-  - pip install pytest-cov==2.7.1
-  - pip install poetry
-
-# Run the unit test
+- pip install -r requirements.txt
+- pip install pytest==5.0.1
+- pip install pytest-flask==0.15.0
+- pip install pytest-cov==2.7.1
+- pip install poetry
 script:
-  - poetry run pytest --cov=app
-
-# Push the results back to codecov
+- poetry run pytest --cov=app
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+- bash <(curl -s https://codecov.io/bash)
+env:
+  global:
+    secure: hJR3uaDOnVPXfBAtZSlQ8qPJiwOV5bZc9DtyDok7+ylcV+mdy1o7rqnnq4yZO7ouQG2gzlxKijL1I88WQ7fwbxRwB/CrZUf3oaq4zhTxjEhraJDpngGLLTScujrkVMeUpYTLMVsMg0kgbrl2UTTyuRiX06sWHZH45R5tESvXqcqrDA83LLzLyCAm8njSkfFVowDGLISRDXBpQ8yjUwdRCTTToECiE50MRyv4nT+sCEjxkz6BQ+oVuDTCrhMAxpo7ExBv7/LwEJ3jBqp/JSlhs7xGvBIrkpFd5If5VoDY2AMM/OmocEKfM9MPIO2iHbKgETKfAkHNZHgQe5elQ4fqXOOPtpEAbAXZl174L7wPIdU6EqK0scmeb11uvpQUptd1VHHR9wDAd6LOzndN5vbJsjdB/2tHWxZ6tDzFs6dZeprXUrOMCXW+jducTy1qp9ihoJQ7KZwkwrzfHZy0N+yzpLMkQ95fF9pERTWAn/Fnoe+Br/mh3rALYYFAKaEAB6S8hk4iGL78YJ3ODmLuuzdpR4G+zdo5GQnO/sC0gYQodso7UI1tiPf9l0mcfWfB1/NMR/S58Pi/qyDMGuphSc4uWwLmstydiID8owiXfPnqLttAo9anyOmFBnmFI6Gf6jZA2bOHYhkwKfQAY7w0hQjgDw2ehJzyIvUGqKsJZpYkhTU=
